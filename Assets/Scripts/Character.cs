@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class Character : MonoBehaviour
 {
@@ -13,13 +14,14 @@ public class Character : MonoBehaviour
 	public Skill SecondarySkill;
 	public float MaxHealth = 100;
 	public float CurrentHealth = 100;
+    public float AttackRange;
+    public float HitBoxRadius = 0.5f;
 
-
-	void Start ()
+    void Start ()
 	{
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent> ();
 		agent.speed = speed;
-		PlayerController.Handle.AddCharacter (this);
+		GameController.Handle.AddCharacter (this);
 	}
 
 	public void GoTo (Vector3 destination)
@@ -43,4 +45,12 @@ public class Character : MonoBehaviour
 	{
 		
 	}
+
+    public void Engage(Enemy enemy)
+    {
+        agent.SetDestination(enemy.Position);
+        agent.stoppingDistance = CombatHelper.GetCombatDistance(this, enemy);
+        agent.autoBraking = true;
+        print("Engaging: " + enemy.Name + " Stop: " + CombatHelper.GetCombatDistance(this, enemy));
+    }
 }

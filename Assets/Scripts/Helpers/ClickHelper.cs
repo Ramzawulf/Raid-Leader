@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System;
 
 public class ClickHelper
 {
@@ -40,4 +41,9 @@ public class ClickHelper
 	{
 		return hit.transform.CompareTag ("Character");
 	}
+
+    internal static bool IsEnemy(RaycastHit hit)
+    {
+        return hit.transform.CompareTag("Enemy");
+    }
 }

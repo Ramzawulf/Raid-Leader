@@ -26,16 +26,16 @@ public class CharacterPanel : MonoBehaviour
 	public void Start ()
 	{
 		PrimarySkill.onClick.AddListener (() => {
-			PlayerController.Handle.UsePrimarySkill ();
+			GameController.Handle.UsePrimarySkill ();
 		});
 		SecondarySkill.onClick.AddListener (() => {
-			PlayerController.Handle.UseSecondarySkill ();
+			GameController.Handle.UseSecondarySkill ();
 		});
 		GoTo.onClick.AddListener (() => {
-			PlayerController.Handle.StartGoTo ();
+			GameController.Handle.StartGoTo ();
 		});
 		Engage.onClick.AddListener (() => {
-			PlayerController.Handle.StartEngage ();
+			GameController.Handle.StartEngage ();
 		});
 
 	}
