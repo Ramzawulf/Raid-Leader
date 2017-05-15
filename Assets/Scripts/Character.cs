@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 using System.Collections;
 using System;
 
 [RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour
 {
     private LineRenderer lRenderer;
-    private UnityEngine.AI.NavMeshAgent agent;
+    private NavMeshAgent agent;
     public string CharacterName;
     public Sprite Portrait;
     public float speed = 5;
@@ -19,12 +21,16 @@ public class Character : MonoBehaviour
     public float HitBoxRadius = 0.5f;
     private bool isDragging;
 
-    void Start()
+    private void Awake()
     {
+        lRenderer = GetComponent<LineRenderer>() ?? gameObject.AddComponent<LineRenderer>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.speed = speed;
+    }
+
+    void Start()
+    {
         GameController.Handle.AddCharacter(this);
-        lRenderer = GetComponent<LineRenderer>() ?? gameObject.AddComponent<LineRenderer>();
     }
 
     private void Update()
@@ -67,7 +73,7 @@ public class Character : MonoBehaviour
         agent.SetDestination(enemy.Position);
         agent.stoppingDistance = CombatHelper.GetCombatDistance(this, enemy);
         agent.autoBraking = true;
-        print("Engaging: " + enemy.Name + " Stop: " + CombatHelper.GetCombatDistance(this, enemy));
+        print("Engaging: " + enemy.EnemyName + " Stop: " + CombatHelper.GetCombatDistance(this, enemy));
     }
 
     private void Assist(Character character)

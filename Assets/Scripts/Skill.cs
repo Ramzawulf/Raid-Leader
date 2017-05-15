@@ -7,8 +7,11 @@ public class Skill
 {
 	public enum TargetType
 	{
-		Single,
-		AoE
+		SingleEnemy,
+		MultipleEnemies,
+        Self,
+        SingleAlly,
+        MultipleAllies
 	}
 
 	public string Name;
@@ -27,7 +30,6 @@ public class Skill
 		set{ }
 	}
 
-	[SerializeField]
 	private float lastUse = 0;
 }
 

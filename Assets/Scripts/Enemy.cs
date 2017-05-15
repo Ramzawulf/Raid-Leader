@@ -3,19 +3,17 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-    public string Name;
+    public string EnemyName;
     public float HitBoxRadius = 2;
 
     public Vector3 Position { get { return transform.position; } set { } }
 
     void Awake() {
-        name = Name;
     }
 
     // Use this for initialization
     void Start () {
 		GameController.Handle.AddEnemy (this);
-
     }
 
     // Update is called once per frame
