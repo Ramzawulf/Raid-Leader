@@ -15,11 +15,11 @@ public class ResourceBar: MonoBehaviour
 	public void Awake ()
 	{
 		if (ForeGround == null)
-			ForeGround = transform.FindChild ("Foreground").GetComponent<Image> ();
+			ForeGround = transform.Find ("Foreground").GetComponent<Image> ();
 		if (BackGround == null)
-			BackGround = transform.FindChild ("BackGround").GetComponent<Image> ();
+			BackGround = transform.Find ("BackGround").GetComponent<Image> ();
 		if (ValueLabel == null)
-			ValueLabel = transform.FindChild ("ValueLabel").GetComponent<Text> ();
+			ValueLabel = transform.Find ("ValueLabel").GetComponent<Text> ();
 	}
 
 	public float CurrentValue {

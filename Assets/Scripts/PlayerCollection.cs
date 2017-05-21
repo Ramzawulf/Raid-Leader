@@ -1,42 +1,50 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCollection:MonoBehaviour
+public class PlayerCollection : MonoBehaviour
 {
     private List<Character> characters;
-    public Character _activeCharacter;
-    public Character ActiveCharacter
+    public int Size
     {
-        get {
-            return _activeCharacter;
+        get
+        {
+            if (characters != null)
+                return characters.Count;
+            return -1;
         }
-        set {
-            if (value ==null) {
-                _activeCharacter = value;
-                OnCharacterDeselected();
-            }else if (characters != null) {
-                if (characters.Contains(value))
-                {
-                    _activeCharacter = value;
-                    OnCharacterSelected();
-                }
-            }
-                }
     }
-    public delegate void CharacterSelectionAction();
-    public CharacterSelectionAction OnCharacterSelected;
-    public CharacterSelectionAction OnCharacterDeselected;
 
     void Awake()
     {
         characters = new List<Character>();
     }
 
-    public void AddPlayer(Character newCharacter) {
+    public void AddPlayer(Character newCharacter)
+    {
         if (!characters.Contains(newCharacter))
         {
             characters.Add(newCharacter);
             newCharacter.transform.SetParent(transform);
+        }
+    }
+
+    public Character this[int index]
+    {
+        get
+        {
+
+            if (index >= 0 && index < characters.Count)
+            {
+                return characters[index];
+            }
+            return null;
+        }
+        set
+        {
+            if (index >= 0 && index < characters.Count)
+            {
+                characters[index] = value;
+            }
         }
     }
 }

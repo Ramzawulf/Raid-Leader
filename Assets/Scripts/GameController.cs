@@ -17,8 +17,8 @@ public class GameController : MonoBehaviour
     //public State PlayerState = State.Idle;
     public static GameController Handle;
     private bool waitingForDecision = false;
-    private PlayerCollection Players;
-    private EnemyCollection Enemies;
+    public PlayerCollection Characters;
+    public EnemyCollection Enemies;
     public GameConfiguration Configuration;
 
     void Awake()
@@ -27,34 +27,41 @@ public class GameController : MonoBehaviour
             Handle = this;
         else if (Handle != this)
             Destroy(gameObject);
-        Init();
-        
+    }
 
+    private void Start()
+    {
+        Init();
     }
 
     private void Init()
     {
-        Players = new GameObject("Players").AddComponent<PlayerCollection>();
-        Players.gameObject.transform.SetParent(transform);
+        Characters = new GameObject("Players").AddComponent<PlayerCollection>();
+        Characters.gameObject.transform.SetParent(transform);
+        GameObject temp;
 
-
-
-        foreach (CharacterConfiguration charConf in Configuration.characters)
+        for (int i = 0; i < Configuration.Characters.Length; i++)
         {
-            charConf.Create();
+            temp = Configuration.Characters[i].Create();
+            temp.transform.position = StageManager.Instance.CharacterSpawnPositions[i];
         }
+
 
         Enemies = new GameObject("Enemies").AddComponent<EnemyCollection>();
         Enemies.gameObject.transform.SetParent(transform);
-        foreach (EnemyConfiguration enConf in Configuration.enemies)
+
+        for (int i = 0; i < Configuration.Enemies.Length; i++)
         {
-            enConf.Create();
+            temp = Configuration.Enemies[i].Create();
+            temp.transform.position = StageManager.Instance.EnemySpawnPositions[i];
         }
+
+
     }
 
     void Update()
     {
-        RaycastHit hit;
+        /*RaycastHit hit;
         if (Input.GetMouseButtonDown(0))
         {
             if (waitingForDecision)
@@ -72,12 +79,12 @@ public class GameController : MonoBehaviour
                     Players.ActiveCharacter = null;
                 }
             }
-        }
+        }*/
     }
 
     public void AddCharacter(Character character)
     {
-        Players.AddPlayer(character);
+        Characters.AddPlayer(character);
     }
 
     public void AddEnemy(Enemy enemy)
@@ -87,29 +94,29 @@ public class GameController : MonoBehaviour
 
     #region Character Controlls
 
-    public void UsePrimarySkill()
+    /*public void UsePrimarySkill()
     {
         if (Players.ActiveCharacter != null)
         {
             Players.ActiveCharacter.UsePrimarySkill();
         }
-    }
+    }*/
 
-    public void UseSecondarySkill()
+    /*public void UseSecondarySkill()
     {
         if (Players.ActiveCharacter != null)
         {
             Players.ActiveCharacter.UseSecondarySkill();
         }
-    }
+    }*/
 
-    public void StartGoTo()
+    /*public void StartGoTo()
     {
         if (Players.ActiveCharacter != null)
         {
             StartCoroutine(_GoTo(Players.ActiveCharacter));
         }
-    }
+    }*/
 
     IEnumerator _GoTo(Character selChar)
     {
@@ -135,13 +142,13 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void StartEngage()
+    /*public void StartEngage()
     {
         if (Players.ActiveCharacter != null)
         {
             StartCoroutine(_StartEngage(Players.ActiveCharacter));
         }
-    }
+    }*/
 
     IEnumerator _StartEngage(Character selChar)
     {

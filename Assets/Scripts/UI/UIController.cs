@@ -1,29 +1,40 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Text;
 using System.Collections;
 
 public class UIController : MonoBehaviour
 {
-	public static UIController Handle;
-	public CharacterPanel charPanel;
+	public static UIController Instance;
+    public Text Debug;
 
 	void Awake ()
 	{
-		if (Handle == null)
-			Handle = this;
-		else if (Handle != this)
+		if (Instance == null)
+			Instance = this;
+		else if (Instance != this)
 			Destroy (gameObject);
 	}
 
-	public void OnCharacerSelected (Character character)
+    public void Update()
+    {
+        StringBuilder message = new StringBuilder();
+
+        for (int i = 0; i < GameController.Handle.Characters.Size; i++)
+        {
+            message.AppendLine(GameController.Handle.Characters[i].ToString());
+        }
+
+        Debug.text = message.ToString();
+    }
+
+    public void OnCharacerSelected (Character character)
 	{
-		charPanel.Show ();
-		charPanel.Bind (character);
+
 	}
 
 	public void OnCharDeselected ()
 	{
-		charPanel.Hide ();
-		charPanel.Unbind ();
-	}
+    }
 
 }

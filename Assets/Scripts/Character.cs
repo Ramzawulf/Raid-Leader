@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using System.Text;
 using UnityEngine.UI;
 using System.Collections;
 using System;
 
 [RequireComponent(typeof(LineRenderer))]
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
 public class Character : MonoBehaviour
 {
     private LineRenderer lRenderer;
@@ -20,11 +22,15 @@ public class Character : MonoBehaviour
     public float AttackRange;
     public float HitBoxRadius = 0.5f;
     private bool isDragging;
+    private Animator anim;
+    public Enemy MyEnemy;
+    private bool IsEngaged = false;
 
     private void Awake()
     {
         lRenderer = GetComponent<LineRenderer>() ?? gameObject.AddComponent<LineRenderer>();
-        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
         agent.speed = speed;
     }
 
@@ -49,12 +55,41 @@ public class Character : MonoBehaviour
             lRenderer.SetPosition(0, transform.position);
             lRenderer.SetPosition(1, transform.position);
         }
+
+        //Animation controls
+        anim.SetFloat("Speed", agent.velocity.magnitude);
+        anim.SetBool("Attacking", IsEngaged && InRange());
     }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine(CharacterName + " H: " + MaxHealth + "/" + CurrentHealth);
+        sb.AppendLine("-Enemy: " + MyEnemy + "Eng: " + IsEngaged + " Rng: " + InRange());
+        sb.AppendLine("-Dist: " + agent.remainingDistance);
+        return sb.ToString();
+    }
+
+
+    #region Combat
+
+    private bool InRange()
+    {
+        if (MyEnemy == null)
+            return false;
+        if (agent.remainingDistance <= CombatHelper.GetCombatDistance(this, MyEnemy))
+            return true;
+        return false;
+    }
+
+    #endregion
 
     #region Actions
     public void GoTo(Vector3 destination)
     {
         agent.SetDestination(destination);
+        agent.stoppingDistance = 0;
+        IsEngaged = false;
         print("going to: " + destination);
     }
 
@@ -73,7 +108,9 @@ public class Character : MonoBehaviour
         agent.SetDestination(enemy.Position);
         agent.stoppingDistance = CombatHelper.GetCombatDistance(this, enemy);
         agent.autoBraking = true;
-        print("Engaging: " + enemy.EnemyName + " Stop: " + CombatHelper.GetCombatDistance(this, enemy));
+        IsEngaged = true;
+        MyEnemy = enemy;
+        print(CharacterName + " Engaging: " + enemy.EnemyName + " Stop: " + CombatHelper.GetCombatDistance(this, enemy));
     }
 
     private void Assist(Character character)

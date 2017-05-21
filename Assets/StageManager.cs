@@ -10,6 +10,11 @@ public class StageManager : MonoBehaviour
     public int enemySize = 5;
     public static StageManager Instance;
     public float spawningRadius;
+    public Vector3[] CharacterSpawnPositions
+    {
+        get { return GetCharacterSpawnpoints(); }
+    }
+    public Vector3[] EnemySpawnPositions { get { return GetEnemySpawnPoints(); } }
     public Transform CharacterStartPosition;
     public Transform EnemyStartPosition;
 
@@ -25,7 +30,7 @@ public class StageManager : MonoBehaviour
     {
         var result = new Vector3[partySize];
         float degrees = 360 / partySize;
-        
+
         for (int i = 0; i < partySize; i++)
         {
             float x, y, z;
@@ -34,7 +39,7 @@ public class StageManager : MonoBehaviour
             y = CharacterStartPosition.position.y;
             z = spawningRadius * Mathf.Sin(Mathf.Deg2Rad * degrees * i) + CharacterStartPosition.position.z;
 
-            result[i] = new Vector3(x,y,z);
+            result[i] = new Vector3(x, y, z);
         }
 
         return result;

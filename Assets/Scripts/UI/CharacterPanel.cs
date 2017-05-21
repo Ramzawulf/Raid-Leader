@@ -25,7 +25,7 @@ public class CharacterPanel : MonoBehaviour
 
 	public void Start ()
 	{
-		PrimarySkill.onClick.AddListener (() => {
+		/*PrimarySkill.onClick.AddListener (() => {
 			GameController.Handle.UsePrimarySkill ();
 		});
 		SecondarySkill.onClick.AddListener (() => {
@@ -36,7 +36,7 @@ public class CharacterPanel : MonoBehaviour
 		});
 		Engage.onClick.AddListener (() => {
 			GameController.Handle.StartEngage ();
-		});
+		});*/
 
 	}
 

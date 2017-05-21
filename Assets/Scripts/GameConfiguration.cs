@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class GameConfiguration
 {
-    public CharacterConfiguration[] characters;
-    public EnemyConfiguration[] enemies;
+    public CharacterConfiguration[] Characters;
+    public EnemyConfiguration[] Enemies;
     private static string CONFIG_KEY = "CONFIGURATION_KEY";
 }
 
