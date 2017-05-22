@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using Assets.Scripts;
 
 [RequireComponent(typeof(LineRenderer))]
 [RequireComponent(typeof(NavMeshAgent))]

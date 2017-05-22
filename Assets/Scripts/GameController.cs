@@ -1,67 +1,71 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿using System.Collections;
+using UnityEngine;
 
-public class GameController : MonoBehaviour
+namespace Assets.Scripts
 {
-    public enum State
+    public class GameController : MonoBehaviour
     {
-        Idle,
-        CharacterSelected,
-        MovingTo,
-        Engaging
-    }
-
-    //public State PlayerState = State.Idle;
-    public static GameController Handle;
-    private bool waitingForDecision = false;
-    public PlayerCollection Characters;
-    public EnemyCollection Enemies;
-    public GameConfiguration Configuration;
-
-    void Awake()
-    {
-        if (Handle == null)
-            Handle = this;
-        else if (Handle != this)
-            Destroy(gameObject);
-    }
-
-    private void Start()
-    {
-        Init();
-    }
-
-    private void Init()
-    {
-        Characters = new GameObject("Players").AddComponent<PlayerCollection>();
-        Characters.gameObject.transform.SetParent(transform);
-        GameObject temp;
-
-        for (int i = 0; i < Configuration.Characters.Length; i++)
+        public enum State
         {
-            temp = Configuration.Characters[i].Create();
-            temp.transform.position = StageManager.Instance.CharacterSpawnPositions[i];
+            Idle,
+            CharacterSelected,
+            MovingTo,
+            Engaging
         }
 
+        //public State PlayerState = State.Idle;
+        public static GameController Handle;
+        public PlayerCollection Characters;
+        public GameConfiguration Configuration;
+        public EnemyCollection Enemies;
+        public bool waitingForDecision;
 
-        Enemies = new GameObject("Enemies").AddComponent<EnemyCollection>();
-        Enemies.gameObject.transform.SetParent(transform);
-
-        for (int i = 0; i < Configuration.Enemies.Length; i++)
+        private void Awake()
         {
-            temp = Configuration.Enemies[i].Create();
-            temp.transform.position = StageManager.Instance.EnemySpawnPositions[i];
+            if (Handle == null)
+                Handle = this;
+            else if (Handle != this)
+                Destroy(gameObject);
         }
 
+        private void Start()
+        {
+            Init();
+        }
 
-    }
+        private void Init()
+        {
+            InitEnemies();
+            InitRaiders();
+        }
 
-    void Update()
-    {
-        /*RaycastHit hit;
+        private void InitRaiders()
+        {
+            Characters = new GameObject("Players").AddComponent<PlayerCollection>();
+            Characters.gameObject.transform.SetParent(transform);
+
+            for (var i = 0; i < Configuration.Characters.Length; i++)
+            {
+                var temp = Configuration.Characters[i].Create();
+                temp.transform.position = StageManager.Instance.CharacterSpawnPositions[i];
+            }
+        }
+
+        private void InitEnemies()
+        {
+            for (var i = 0; i < Configuration.Enemies.Length; i++)
+            {
+                var temp = Configuration.Enemies[i].Create();
+                temp.transform.position = StageManager.Instance.EnemySpawnPositions[i];
+            }
+
+            Enemies = new GameObject("Enemies").AddComponent<EnemyCollection>();
+            Enemies.gameObject.transform.SetParent(transform);
+        }
+
+        private void Update()
+        {
+            /*RaycastHit hit;
         if (Input.GetMouseButtonDown(0))
         {
             if (waitingForDecision)
@@ -80,21 +84,21 @@ public class GameController : MonoBehaviour
                 }
             }
         }*/
-    }
+        }
 
-    public void AddCharacter(Character character)
-    {
-        Characters.AddPlayer(character);
-    }
+        public void AddCharacter(Character character)
+        {
+            Characters.AddPlayer(character);
+        }
 
-    public void AddEnemy(Enemy enemy)
-    {
-        Enemies.AddEnemy(enemy);
-    }
+        public void AddEnemy(Enemy enemy)
+        {
+            Enemies.AddEnemy(enemy);
+        }
 
-    #region Character Controlls
+        #region Character Controlls
 
-    /*public void UsePrimarySkill()
+        /*public void UsePrimarySkill()
     {
         if (Players.ActiveCharacter != null)
         {
@@ -102,7 +106,7 @@ public class GameController : MonoBehaviour
         }
     }*/
 
-    /*public void UseSecondarySkill()
+        /*public void UseSecondarySkill()
     {
         if (Players.ActiveCharacter != null)
         {
@@ -110,7 +114,7 @@ public class GameController : MonoBehaviour
         }
     }*/
 
-    /*public void StartGoTo()
+        /*public void StartGoTo()
     {
         if (Players.ActiveCharacter != null)
         {
@@ -118,31 +122,31 @@ public class GameController : MonoBehaviour
         }
     }*/
 
-    IEnumerator _GoTo(Character selChar)
-    {
-        while (true)
+        private IEnumerator _GoTo(Character selChar)
         {
-            waitingForDecision = true;
-            if (Input.GetMouseButtonDown(0))
+            while (true)
             {
-                RaycastHit hit;
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 10000))
+                waitingForDecision = true;
+                if (Input.GetMouseButtonDown(0))
                 {
-                    if (!ClickHelper.IsUIClick() && ClickHelper.IsTerrain(hit))
+                    RaycastHit hit;
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 10000))
                     {
-                        selChar.GoTo(hit.point);
-                        waitingForDecision = false;
-                        break;
+                        if (!ClickHelper.IsUIClick() && ClickHelper.IsTerrain(hit))
+                        {
+                            selChar.GoTo(hit.point);
+                            waitingForDecision = false;
+                            break;
+                        }
                     }
+                    waitingForDecision = false;
+                    break;
                 }
-                waitingForDecision = false;
-                break;
+                yield return null;
             }
-            yield return null;
         }
-    }
 
-    /*public void StartEngage()
+        /*public void StartEngage()
     {
         if (Players.ActiveCharacter != null)
         {
@@ -150,29 +154,30 @@ public class GameController : MonoBehaviour
         }
     }*/
 
-    IEnumerator _StartEngage(Character selChar)
-    {
-        while (true)
+        private IEnumerator _StartEngage(Character selChar)
         {
-            waitingForDecision = true;
-            if (Input.GetMouseButtonDown(0))
+            while (true)
             {
-                RaycastHit hit;
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 10000))
+                waitingForDecision = true;
+                if (Input.GetMouseButtonDown(0))
                 {
-                    if (ClickHelper.IsEnemy(hit))
+                    RaycastHit hit;
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 10000))
                     {
-                        selChar.Engage(hit.transform.GetComponent<Enemy>());
-                        waitingForDecision = false;
-                        break;
+                        if (ClickHelper.IsEnemy(hit))
+                        {
+                            selChar.Engage(hit.transform.GetComponent<Enemy>());
+                            waitingForDecision = false;
+                            break;
+                        }
                     }
+                    waitingForDecision = false;
+                    break;
                 }
-                waitingForDecision = false;
-                break;
+                yield return null;
             }
-            yield return null;
         }
-    }
 
-    #endregion
+        #endregion
+    }
 }

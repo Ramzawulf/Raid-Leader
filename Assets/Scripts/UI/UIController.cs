@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Text;
 using System.Collections;
+using Assets.Scripts;
 
 public class UIController : MonoBehaviour
 {
