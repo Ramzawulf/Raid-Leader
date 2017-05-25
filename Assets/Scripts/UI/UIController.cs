@@ -3,19 +3,22 @@ using UnityEngine.UI;
 using System.Text;
 using System.Collections;
 using Assets.Scripts;
+using Assets.Scripts.UI;
 
 public class UIController : MonoBehaviour
 {
-	public static UIController Instance;
+    public static UIController Instance;
     public Text Debug;
 
-	void Awake ()
-	{
-		if (Instance == null)
-			Instance = this;
-		else if (Instance != this)
-			Destroy (gameObject);
-	}
+    public HealthBar BossHealthBar;
+
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            Destroy(gameObject);
+    }
 
     public void Update()
     {
@@ -29,13 +32,13 @@ public class UIController : MonoBehaviour
         Debug.text = message.ToString();
     }
 
-    public void OnCharacerSelected (Character character)
-	{
+    public void OnCharacerSelected(Character character)
+    {
 
-	}
+    }
 
-	public void OnCharDeselected ()
-	{
+    public void OnCharDeselected()
+    {
     }
 
 }

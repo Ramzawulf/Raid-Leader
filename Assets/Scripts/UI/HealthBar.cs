@@ -12,6 +12,18 @@ namespace Assets.Scripts.UI
 
         public float MaxValue = 100;
         private float _currentValue;
+        private string _barName;
+        public string BarName {
+            get
+            {
+                return _barName;
+            }
+            set
+            {
+                _barName = value;
+                UpdateBar();
+            }
+        }
 
         public void Awake ()
         {
@@ -37,7 +49,11 @@ namespace Assets.Scripts.UI
         {
             if (MaxValue != 0)
                 ForeGround.fillAmount = Mathf.Max (_currentValue / MaxValue);
-            ValueLabel.text = string.Format ("{0}/{1}", CurrentValue, MaxValue);
+            string labelValue = "";
+            if (!string.IsNullOrEmpty(BarName))
+                labelValue = BarName + ": ";
+            labelValue += string.Format("{0}/{1}", CurrentValue, MaxValue);
+            ValueLabel.text = labelValue;
         }
     }
 }

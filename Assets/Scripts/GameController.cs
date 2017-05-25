@@ -1,19 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class GameController : MonoBehaviour
     {
-        public enum State
-        {
-            Idle,
-            CharacterSelected,
-            MovingTo,
-            Engaging
-        }
-
-        //public State PlayerState = State.Idle;
         public static GameController Handle;
         public GameConfiguration Configuration;
         public bool waitingForDecision;
@@ -36,6 +28,7 @@ namespace Assets.Scripts
             InitEnemies();
             InitRaiders();
         }
+        
 
         private void InitRaiders()
         {
@@ -60,29 +53,14 @@ namespace Assets.Scripts
 
             GameObject container = new GameObject("Enemies");
             container.transform.SetParent(transform);
+            if(Enemy.Collection != null && Enemy.Collection.Count > 0)
+            {
+                Enemy.Collection[0].SetHealthBar(UIController.Instance.BossHealthBar);
+            }
         }
 
         private void Update()
         {
-            /*RaycastHit hit;
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (waitingForDecision)
-                return;
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 10000))
-            {
-                if (ClickHelper.IsUIClick())
-                    return;
-                if (ClickHelper.IsCharacter(hit))
-                {
-                    Players.ActiveCharacter = hit.transform.GetComponent<Character>();
-                }
-                else if (ClickHelper.IsTerrain(hit))
-                {
-                    Players.ActiveCharacter = null;
-                }
-            }
-        }*/
         }
         
         #region Character Controlls

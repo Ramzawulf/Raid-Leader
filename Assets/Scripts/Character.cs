@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
     public Skill SecondarySkill;
     public float MaxHealth = 100;
     public float CurrentHealth = 100;
-    public float AttackRange;
+    public AttackBehaviour MyAttack;
     public float HitBoxRadius = 0.5f;
     private bool isDragging;
     private Animator anim;
@@ -70,6 +70,10 @@ public class Character : MonoBehaviour
         //Animation controls
         anim.SetFloat("Speed", agent.velocity.magnitude);
         anim.SetBool("Attacking", IsEngaged && InRange());
+
+        if (IsEngaged && InRange()) {
+            MyAttack.Perform(MyEnemy);
+}
     }
 
     public override string ToString()

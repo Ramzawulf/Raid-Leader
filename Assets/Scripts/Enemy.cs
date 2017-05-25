@@ -1,16 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.UI;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class Enemy : MonoBehaviour {
+    public class Enemy : MonoBehaviour
+    {
 
         public string EnemyName;
         public float HitBoxRadius = 2;
-
-        public Vector3 Position { get { return transform.position; } set { } }
-
+        public AttackBehaviour Attack;
+        public float MaxHealth;
+        public float CurrentHealth;
         public static List<Enemy> Collection;
+        public Vector3 Position { get { return transform.position; } set { } }
+        private HealthBar healthBar;
+
+        public void SetHealthBar(HealthBar hBar) {
+            healthBar = hBar;
+            healthBar.MaxValue = MaxHealth;
+            healthBar.CurrentValue = CurrentHealth;
+            healthBar.BarName = EnemyName;
+        }
+
+        public void Damage(float damage)
+        {
+            CurrentHealth -= damage;
+            healthBar.CurrentValue = CurrentHealth;
+        }
 
         private void OnEnable()
         {
