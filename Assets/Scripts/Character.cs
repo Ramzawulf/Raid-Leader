@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 using Assets.Scripts;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(LineRenderer))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -27,17 +28,26 @@ public class Character : MonoBehaviour
     public Enemy MyEnemy;
     private bool IsEngaged = false;
 
+    public static List<Character> Collection;
+
+    private void OnEnable()
+    {
+        if (Collection == null)
+            Collection = new List<Character>();
+        Collection.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        Collection.Remove(this);
+    }
+
     private void Awake()
     {
         lRenderer = GetComponent<LineRenderer>() ?? gameObject.AddComponent<LineRenderer>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         agent.speed = speed;
-    }
-
-    void Start()
-    {
-        GameController.Handle.AddCharacter(this);
     }
 
     private void Update()

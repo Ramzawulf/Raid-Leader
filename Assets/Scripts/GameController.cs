@@ -15,9 +15,7 @@ namespace Assets.Scripts
 
         //public State PlayerState = State.Idle;
         public static GameController Handle;
-        public PlayerCollection Characters;
         public GameConfiguration Configuration;
-        public EnemyCollection Enemies;
         public bool waitingForDecision;
 
         private void Awake()
@@ -41,13 +39,14 @@ namespace Assets.Scripts
 
         private void InitRaiders()
         {
-            Characters = new GameObject("Players").AddComponent<PlayerCollection>();
-            Characters.gameObject.transform.SetParent(transform);
+            GameObject container = new GameObject("Players");
+            container.transform.SetParent(transform);
 
             for (var i = 0; i < Configuration.Characters.Length; i++)
             {
                 var temp = Configuration.Characters[i].Create();
                 temp.transform.position = StageManager.Instance.CharacterSpawnPositions[i];
+                temp.transform.SetParent(container.transform);
             }
         }
 
@@ -59,8 +58,8 @@ namespace Assets.Scripts
                 temp.transform.position = StageManager.Instance.EnemySpawnPositions[i];
             }
 
-            Enemies = new GameObject("Enemies").AddComponent<EnemyCollection>();
-            Enemies.gameObject.transform.SetParent(transform);
+            GameObject container = new GameObject("Enemies");
+            container.transform.SetParent(transform);
         }
 
         private void Update()
@@ -85,17 +84,7 @@ namespace Assets.Scripts
             }
         }*/
         }
-
-        public void AddCharacter(Character character)
-        {
-            Characters.AddPlayer(character);
-        }
-
-        public void AddEnemy(Enemy enemy)
-        {
-            Enemies.AddEnemy(enemy);
-        }
-
+        
         #region Character Controlls
 
         /*public void UsePrimarySkill()

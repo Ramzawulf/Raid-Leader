@@ -21,9 +21,9 @@ public class UIController : MonoBehaviour
     {
         StringBuilder message = new StringBuilder();
 
-        for (int i = 0; i < GameController.Handle.Characters.Size; i++)
+        for (int i = 0; i < Character.Collection.Count; i++)
         {
-            message.AppendLine(GameController.Handle.Characters[i].ToString());
+            message.AppendLine(Character.Collection[i].ToString());
         }
 
         Debug.text = message.ToString();

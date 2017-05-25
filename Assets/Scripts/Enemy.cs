@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -9,17 +10,18 @@ namespace Assets.Scripts
 
         public Vector3 Position { get { return transform.position; } set { } }
 
-        void Awake() {
+        public static List<Enemy> Collection;
+
+        private void OnEnable()
+        {
+            if (Collection == null)
+                Collection = new List<Enemy>();
+            Collection.Add(this);
         }
 
-        // Use this for initialization
-        void Start () {
-            GameController.Handle.AddEnemy (this);
-        }
-
-        // Update is called once per frame
-        void Update () {
-	
+        private void OnDisable()
+        {
+            Collection.Remove(this);
         }
 
         private void OnDrawGizmos()
