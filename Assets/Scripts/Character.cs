@@ -47,18 +47,6 @@ public class Character : MonoBehaviour
         //MyAttack = new AttackBehaviour();
     }
 
-    protected void Update()
-    {
-        //Animation controls
-        anim.SetFloat("Speed", agent.velocity.magnitude);
-        anim.SetBool("Attacking", IsEngaged && InRange());
-
-        if (IsEngaged && InRange())
-        {
-            MyAttack.Perform(MyEnemy);
-        }
-    }
-
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
@@ -100,5 +88,18 @@ public class Character : MonoBehaviour
     public virtual void Assist(Character character)
     {
     }
+    #endregion
+
+    #region Pause
+
+    public void Pause() {
+        agent.speed = 0;
+        MyAttack.Pause();
+    }
+    public void UnPause() {
+        agent.speed = speed;
+        MyAttack.UnPause();
+    }
+
     #endregion
 }

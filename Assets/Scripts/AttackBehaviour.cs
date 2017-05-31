@@ -11,6 +11,7 @@ namespace Assets.Scripts
         public float Range;
 
         private float LastAttack = 0;
+        private float mementoLastAttack;
 
         bool IsReady()
         {
@@ -24,5 +25,15 @@ namespace Assets.Scripts
 
         }
 
+        public void Pause()
+        {
+            mementoLastAttack = LastAttack;
+            LastAttack = float.PositiveInfinity;
+        }
+
+        internal void UnPause()
+        {
+            LastAttack = mementoLastAttack;
+        }
     }
 }

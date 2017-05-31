@@ -21,6 +21,17 @@ public class Raider : Character
         Collection.Remove(this);
     }
 
+    private void Update()
+    {
+        anim.SetFloat("Speed", agent.velocity.magnitude);
+        anim.SetBool("Attacking", IsEngaged && InRange());
+
+        if (IsEngaged && InRange())
+        {
+            MyAttack.Perform(MyEnemy);
+        }
+    }
+
     public override void GoTo(Vector3 destination)
     {
         agent.SetDestination(destination);
