@@ -12,10 +12,9 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Animator))]
 public class Character : MonoBehaviour
 {
+    public RaiderInfo MyInfo;
     private LineRenderer lRenderer;
     private NavMeshAgent agent;
-    public string CharacterName;
-    public Sprite Portrait;
     public float speed = 5;
     public Skill PrimarySkill;
     public Skill SecondarySkill;
@@ -79,7 +78,7 @@ public class Character : MonoBehaviour
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.AppendLine(CharacterName + " H: " + MaxHealth + "/" + CurrentHealth);
+        sb.AppendLine(MyInfo.Name+ " H: " + MaxHealth + "/" + CurrentHealth);
         sb.AppendLine("-Enemy: " + MyEnemy + "Eng: " + IsEngaged + " Rng: " + InRange());
         sb.AppendLine("-Dist: " + agent.remainingDistance);
         return sb.ToString();
@@ -110,12 +109,12 @@ public class Character : MonoBehaviour
 
     public void UsePrimarySkill()
     {
-        print(CharacterName + "used: " + PrimarySkill.Name + "(PS)");
+        print(MyInfo.Name + "used: " + PrimarySkill.Name + "(PS)");
     }
 
     public void UseSecondarySkill()
     {
-        print(CharacterName + "used: " + SecondarySkill.Name + "(SS)");
+        print(MyInfo.Name + "used: " + SecondarySkill.Name + "(SS)");
     }
 
     public void Engage(Enemy enemy)
@@ -125,13 +124,13 @@ public class Character : MonoBehaviour
         agent.autoBraking = true;
         IsEngaged = true;
         MyEnemy = enemy;
-        print(CharacterName + " Engaging: " + enemy.EnemyName + " Stop: " + CombatHelper.GetCombatDistance(this, enemy));
+        print(MyInfo.Name + " Engaging: " + enemy.EnemyName + " Stop: " + CombatHelper.GetCombatDistance(this, enemy));
     }
 
     private void Assist(Character character)
     {
         //TODO: Implement for healers.
-        print("Assisting: " + character.CharacterName);
+        print("Assisting: " + character.MyInfo.Name);
     }
     #endregion
 

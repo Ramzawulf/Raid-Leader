@@ -28,16 +28,15 @@ namespace Assets.Scripts
             InitEnemies();
             InitRaiders();
         }
-        
 
         private void InitRaiders()
         {
             GameObject container = new GameObject("Players");
             container.transform.SetParent(transform);
 
-            for (var i = 0; i < Configuration.Characters.Length; i++)
+            for (var i = 0; i < Configuration.Raiders.Length; i++)
             {
-                var temp = Configuration.Characters[i].Create();
+                var temp = Configuration.Raiders[i].Create();
                 temp.transform.position = StageManager.Instance.CharacterSpawnPositions[i];
                 temp.transform.SetParent(container.transform);
             }
@@ -58,93 +57,5 @@ namespace Assets.Scripts
                 Enemy.Collection[0].SetHealthBar(UIController.Instance.BossHealthBar);
             }
         }
-
-        private void Update()
-        {
-        }
-        
-        #region Character Controlls
-
-        /*public void UsePrimarySkill()
-    {
-        if (Players.ActiveCharacter != null)
-        {
-            Players.ActiveCharacter.UsePrimarySkill();
-        }
-    }*/
-
-        /*public void UseSecondarySkill()
-    {
-        if (Players.ActiveCharacter != null)
-        {
-            Players.ActiveCharacter.UseSecondarySkill();
-        }
-    }*/
-
-        /*public void StartGoTo()
-    {
-        if (Players.ActiveCharacter != null)
-        {
-            StartCoroutine(_GoTo(Players.ActiveCharacter));
-        }
-    }*/
-
-        private IEnumerator _GoTo(Character selChar)
-        {
-            while (true)
-            {
-                waitingForDecision = true;
-                if (Input.GetMouseButtonDown(0))
-                {
-                    RaycastHit hit;
-                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 10000))
-                    {
-                        if (!ClickHelper.IsUIClick() && ClickHelper.IsTerrain(hit))
-                        {
-                            selChar.GoTo(hit.point);
-                            waitingForDecision = false;
-                            break;
-                        }
-                    }
-                    waitingForDecision = false;
-                    break;
-                }
-                yield return null;
-            }
-        }
-
-        /*public void StartEngage()
-    {
-        if (Players.ActiveCharacter != null)
-        {
-            StartCoroutine(_StartEngage(Players.ActiveCharacter));
-        }
-    }*/
-
-        private IEnumerator _StartEngage(Character selChar)
-        {
-            while (true)
-            {
-                waitingForDecision = true;
-                if (Input.GetMouseButtonDown(0))
-                {
-                    RaycastHit hit;
-                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 10000))
-                    {
-                        if (ClickHelper.IsEnemy(hit))
-                        {
-                            selChar.Engage(hit.transform.GetComponent<Enemy>());
-                            waitingForDecision = false;
-                            break;
-                        }
-                    }
-                    waitingForDecision = false;
-                    break;
-                }
-                yield return null;
-            }
-        }
-
-        #endregion
     }
 }

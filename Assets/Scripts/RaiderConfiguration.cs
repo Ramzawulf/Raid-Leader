@@ -1,9 +1,9 @@
 ﻿using Assets.Scripts;
 using UnityEngine;
 [System.Serializable]
-public class CharacterConfiguration
+public class RaiderConfiguration
 {
-    public string CharacterName;
+    public string RaiderName;
     public Sprite Portrait;
     public float speed;
     public Skill PrimarySkill;
@@ -16,8 +16,8 @@ public class CharacterConfiguration
     {
         GameObject go = GameObject.Instantiate(PrefabManager.Instance.CharacterPrefab);
         Character c = go.AddComponent<Character>();
-        c.name = c.CharacterName = CharacterName;
-        c.Portrait = Portrait;
+        c.name = c.MyInfo.Name = RaiderName;
+        c.MyInfo.Portrait = Portrait;
         c.speed = speed;
         c.PrimarySkill = PrimarySkill;
         c.SecondarySkill = SecondarySkill;
