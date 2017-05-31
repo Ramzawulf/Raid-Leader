@@ -36,7 +36,7 @@ namespace Assets.Scripts
 
             for (var i = 0; i < Configuration.Raiders.Length; i++)
             {
-                var temp = Configuration.Raiders[i].Create();
+                GameObject temp = Configuration.Raiders[i].Create();
                 temp.transform.position = StageManager.Instance.CharacterSpawnPositions[i];
                 temp.transform.SetParent(container.transform);
             }

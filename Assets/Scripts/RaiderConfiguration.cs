@@ -15,7 +15,7 @@ public class RaiderConfiguration
     public GameObject Create()
     {
         GameObject go = GameObject.Instantiate(PrefabManager.Instance.CharacterPrefab);
-        Character c = go.AddComponent<Character>();
+        Raider c = go.AddComponent<Raider>();
         c.name = c.MyInfo.Name = RaiderName;
         c.MyInfo.Portrait = Portrait;
         c.speed = speed;
